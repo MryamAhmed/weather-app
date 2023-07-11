@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weatherapp/cubts/weathe_cubit/weather_cubit.dart';
 import 'package:weatherapp/pages/home_page.dart';
-import 'package:weatherapp/provider/weatherData.dart';
+import 'package:weatherapp/serveses/weather_servises.dart';
 
 void main() {
-  runApp( ChangeNotifierProvider(
+  runApp( BlocProvider(
       create: (context){
-        return WearherProvider();
+        return WeatherCubit(WeatherService());
       },
       child: WeatherApp()
   )
@@ -15,13 +16,12 @@ void main() {
 
 class WeatherApp extends StatelessWidget {
   const WeatherApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Provider.of<WearherProvider>(context).weatherFromProvider==null? Colors.blue: Provider.of<WearherProvider>(context).weatherFromProvider!.getThemeColor() ,
+        primarySwatch: BlocProvider.of<WeatherCubit>(context).weatherModel==null? Colors.blue: BlocProvider.of<WeatherCubit>(context).weatherModel!.getThemeColor() ,
       ),
       home:HomePage() ,
     );

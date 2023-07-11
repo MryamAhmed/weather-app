@@ -1,16 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:weatherapp/cubts/weathe_cubit/weather_cubit.dart';
 import '../models/weather_model.dart';
-
 import '../provider/weatherData.dart';
 import '../serveses/weather_servises.dart';
-
 class SearchPage extends StatelessWidget {
-
-
 String? city_name;
-
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +24,9 @@ String? city_name;
             },
             onSubmitted: (data) async{
               city_name= data;
-
-              WeatherService service = WeatherService();
-
-              WeatherModel? weather= await service.getweather(cityName: city_name!);
-              print(weather);
-
-              Provider.of<WearherProvider>(context,listen: false).weatherFromProvider=weather;
-              Provider.of<WearherProvider>(context,listen: false).cityName=city_name;
-
-
+              BlocProvider.of<WeatherCubit>(context).getWeather(cityName: city_name!);
+              BlocProvider.of<WeatherCubit>(context).cityName= city_name;
               Navigator.pop(context);
-
             },
             decoration: InputDecoration(
               label: Text(
@@ -49,7 +37,7 @@ String? city_name;
                 onPressed: ()async{
                   WeatherService service = WeatherService();
 
-                  WeatherModel? weather= await service.getweather(cityName: city_name!);
+                  WeatherModel? weather= await service.getWeather(cityName: city_name!);
                   print(weather);
 
                   Provider.of<WearherProvider>(context,listen: false).weatherFromProvider=weather;
